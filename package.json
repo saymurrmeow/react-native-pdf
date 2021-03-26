@@ -28,5 +28,8 @@
     },
     "dependencies": {
         "prop-types": "^15.7.2"
-    }
+    },
+    "_resolved": "git+https://github.com/saymurrmeow/react-native-pdf.git#13491ed855b0ba206bde85b92763dd26797fef9d"
+    ,"_integrity": ""
+    ,"_from": "git+https://github.com/saymurrmeow/react-native-pdf#develop"
 }
