@@ -61,7 +61,7 @@ export default class Pdf extends Component {
     onScaleChanged: PropTypes.func,
     onPressLink: PropTypes.func,
     fileManager: PropTypes.shape({
-      processDownload: PropTypes.func.isRequired,
+      loadFile: PropTypes.func.isRequired,
       unlinkFile: PropTypes.func.isRequired,
     }).isRequired,
 
@@ -88,11 +88,9 @@ export default class Pdf extends Component {
     enableAnnotationRendering: true,
     enablePaging: false,
     enableRTL: false,
-    activityIndicatorProps: { color: "#009900", progressTintColor: "#009900" },
     trustAllCerts: true,
     usePDFKit: true,
     singlePage: false,
-    onLoadProgress: (percent) => {},
     onLoadComplete: (numberOfPages, path) => {},
     onPageChanged: (page, numberOfPages) => {},
     onError: (error) => {},
@@ -105,8 +103,6 @@ export default class Pdf extends Component {
     super(props);
     this.state = {
       path: "",
-      isDownloaded: false,
-      progress: 0,
       isSupportPDFKit: -1,
     };
   }
@@ -136,10 +132,10 @@ export default class Pdf extends Component {
   }
 
   _loadFile = async () => {
-    this.lastFMTask = this.props.fileManager.processDownload();
+    this.lastFMTask = this.props.fileManager.loadFile();
 
     this.lastFMTask.then((res) => {
-      this.setState({ isDownloaded: true, path: res.filePath });
+      this.setState({ path: res.filePath });
     });
   };
 
@@ -154,15 +150,6 @@ export default class Pdf extends Component {
       this._root.setNativeProps(nativeProps);
     }
   };
-
-  setPage(pageNumber) {
-    if (pageNumber === null || isNaN(pageNumber)) {
-      throw new Error("Specified pageNumber is not a number");
-    }
-    this.setNativeProps({
-      page: pageNumber,
-    });
-  }
 
   _onChange = (event) => {
     let message = event.nativeEvent.message.split("|");
@@ -210,9 +197,7 @@ export default class Pdf extends Component {
   render() {
     return (
       <View style={[this.props.style, { overflow: "hidden" }]}>
-        {!this.state.isDownloaded ? (
-          <View />
-        ) : Platform.OS === "android" || Platform.OS === "windows" ? (
+        {Platform.OS === "android" || Platform.OS === "windows" ? (
           <PdfCustom
             ref={(component) => (this._root = component)}
             {...this.props}
