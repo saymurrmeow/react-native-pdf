@@ -133,9 +133,13 @@ export default class Pdf extends Component {
   _loadFile = async () => {
     this.lastFMTask = this.props.fileManager.loadFile();
 
-    this.lastFMTask.then((res) => {
-      this.setState({ path: res.filePath });
-    });
+    this.lastFMTask
+      .then((res) => {
+        this.setState({ path: res.filePath });
+      })
+      .catch((e) => {
+        throw e;
+      });
   };
 
   _unlinkFile = async () => {
