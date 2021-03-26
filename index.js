@@ -32,7 +32,6 @@ try {
   };
 }
 
-const SHA1 = require("crypto-js/sha1");
 import PdfView from "./PdfView";
 
 export default class Pdf extends Component {
@@ -128,7 +127,7 @@ export default class Pdf extends Component {
 
   componentWillUnmount() {
     this._mounted = false;
-    this._unlinkFile(this.state.path);
+    this._unlinkFile();
   }
 
   _loadFile = async () => {
@@ -139,9 +138,9 @@ export default class Pdf extends Component {
     });
   };
 
-  _unlinkFile = async (filePath) => {
+  _unlinkFile = async () => {
     try {
-      await this.props.fileManager.unlinkFile(filePath);
+      await this.props.fileManager.unlinkFile(this.state.path);
     } catch (e) {}
   };
 
