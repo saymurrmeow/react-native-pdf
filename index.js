@@ -14,24 +14,8 @@ import {
   View,
   Platform,
   ViewPropTypes,
-  StyleSheet,
   Image,
 } from "react-native";
-
-let RNFetchBlob;
-try {
-  RNFetchBlob = require("rn-fetch-blob").default;
-} catch (e) {
-  // For Windows, when not using rn-fetch-blob with Windows support.
-  RNFetchBlob = {
-    fs: {
-      dirs: {
-        CacheDir: "",
-      },
-    },
-  };
-}
-
 import PdfView from "./PdfView";
 
 export default class Pdf extends Component {
